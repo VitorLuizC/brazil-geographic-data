@@ -1,0 +1,29 @@
+{
+  "name": "brazil-geographic-data",
+  "version": "0.0.0",
+  "description": "Brazil's geographic data. Cities, states, neighbourhoods, indigenous lands etc.",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "standard",
+    "start": "node ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/VitorLuizC/IBGE-Data.git"
+  },
+  "author": "Vitor Cavalcanti",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/VitorLuizC/IBGE-Data/issues"
+  },
+  "homepage": "https://github.com/VitorLuizC/IBGE-Data#readme",
+  "devDependencies": {
+    "standard": "^10.0.3"
+  },
+  "engines": {
+    "node": ">= 8"
+  }
+}

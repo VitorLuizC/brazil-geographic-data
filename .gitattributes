@@ -1,0 +1,6 @@
+# Files as text by default
+# Files line-end as Unix style
+* text=auto eol=lf
+
+# Don't handle lockfile's diffs
+package-lock.json -diff
