@@ -2,13 +2,14 @@
   "name": "brazil-geographic-data",
   "version": "0.0.0",
   "description": "Brazil's geographic data. Cities, states, neighbourhoods, indigenous lands etc.",
-  "main": "lib/index.js",
+  "main": "dist/brazil-geographic-data.cjs.js",
+  "module": "dist/brazil-geographic-data.m.js",
   "directories": {
     "lib": "lib"
   },
   "scripts": {
-    "test": "standard",
-    "start": "node ."
+    "build": "bili lib/index.ts",
+    "start": "npm run build && node ."
   },
   "repository": {
     "type": "git",
@@ -21,9 +22,14 @@
   },
   "homepage": "https://github.com/VitorLuizC/IBGE-Data#readme",
   "devDependencies": {
-    "standard": "^10.0.3"
+    "bili": "^1.5.8",
+    "rollup-plugin-typescript": "^0.8.1"
   },
   "engines": {
     "node": ">= 8"
+  },
+  "dependencies": {
+    "@types/node": "^9.3.0",
+    "axios": "^0.17.1"
   }
 }
