@@ -1,15 +1,14 @@
 import axios from 'axios';
+import { URL, IBGEResponse } from './IBGE';
 
-const URL = 'https://sidra.ibge.gov.br/Territorio/Unidades';
-
-const request = async (level: number = 1) => {
+const request = async (level: number = 1): Promise<IBGEResponse> => {
   const response = await axios.get(URL, {
     data: {
       nivel: level
     }
   });
 
-  console.log(response.data);
+  return response.data as IBGEResponse;
 };
 
 export default request;

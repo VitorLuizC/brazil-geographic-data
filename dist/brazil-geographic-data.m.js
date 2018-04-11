@@ -1,22 +1,72 @@
 import axios from 'axios';
+import { writeFile } from 'fs';
+import { resolve } from 'path';
+import { promisify } from 'util';
 
 function __awaiter(thisArg, _arguments, P, generator) {
-    return new (P || (P = Promise))(function (resolve, reject) {
+    return new (P || (P = Promise))(function (resolve$$1, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator.throw(value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve$$1(result.value) : new P(function (resolve$$1) { resolve$$1(result.value); }).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments)).next());
     });
 }
 
 const URL = 'https://sidra.ibge.gov.br/Territorio/Unidades';
-const request = (level = 1) => __awaiter(undefined, void 0, void 0, function* () {
+
+const request = (level = 1) => __awaiter(undefined, void 0, Promise, function* () {
     const response = yield axios.get(URL, {
         data: {
             nivel: level
         }
     });
-    console.log(response.data);
+    return response.data;
 });
 
-request();
+const write = promisify(writeFile);
+const parse = (data) => {
+    try {
+        return JSON.stringify(data, null, 2);
+    }
+    catch (error) {
+        throw error;
+    }
+};
+const save = (path$$1, data) => __awaiter(undefined, void 0, void 0, function* () {
+    const string = yield parse(data);
+    const filename = resolve(__dirname, '../', path$$1);
+    const options = {
+        enconding: 'utf8',
+        mode: 0o666,
+        flag: 'w'
+    };
+    yield write(filename, string, options);
+});
+
+const sleep = (time) => new Promise((resolve$$1) => setTimeout(resolve$$1, time));
+
+const generate = (min, max) => {
+    const numbers = [...Array(max - min)].map((_, index) => index + min);
+    return numbers;
+};
+
+const getLevel = (level, delay = 0) => __awaiter(undefined, void 0, void 0, function* () {
+    try {
+        yield sleep(delay * 10);
+        const response = yield request(level);
+        return {
+            id: response.Nivel.Id,
+            name: response.Nivel.Nome
+        };
+    }
+    catch (error) {
+        return null;
+    }
+});
+const getLevels = () => __awaiter(undefined, void 0, void 0, function* () {
+    const requests = generate(0, 999).map(getLevel);
+    const responses = yield Promise.all(requests);
+    const levels = [...responses].filter((level) => !!level);
+    yield save('./content/levels.json', levels);
+});
+getLevels();

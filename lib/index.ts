@@ -1,3 +1,6 @@
-import request from './request';
+import './level';
 
-request();
+declare module '*.json' {
+  var data: any;
+  export default data;
+}
